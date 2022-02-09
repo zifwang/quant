@@ -16,7 +16,7 @@ class stock_price:
         self.dateTime = date
 
     """
-        Below is getter and setter
+        Below is getter and setter setcion
     """
     def set_stock_name(self, stock_name: str) -> None:
         self.stock_name = stock_name
