@@ -3,8 +3,9 @@
     stock_price_holder entity 
     This class is used to store historical pricing information
 """
-class stock_price_holder:
-    def __init__(self, stock_no=str, open=list, close=list, high=list, low=list, volume=list, date=list):
+class StockPriceHolder:
+    def __init__(self, stock_name = str, stock_no=str, open=list, close=list, high=list, low=list, volume=list, date=list):
+        self.stock_name = stock_name
         self.stock_no = stock_no
         self.open_list = open
         self.close_list = close
@@ -16,6 +17,11 @@ class stock_price_holder:
     """
         Below is getter and setter setcion
     """
+    def set_stock_name(self, stock_name=str) -> None:
+        self.stock_name = stock_name
+    def get_stock_name(self) -> str:
+        return self.stock_name
+
     def set_stock_no(self, stock_no=str) -> None:
         self.stock_no = stock_no
     def get_stock_no(self) -> str:

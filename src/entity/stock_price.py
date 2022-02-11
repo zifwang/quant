@@ -4,7 +4,7 @@ from datetime import datetime
     Stock_price Entity 
     This entity uses to hold information of each stock
 """
-class stock_price:
+class StockPrice:
     def __init__(self, stock_name, stock_no, open=None, close=None, high=None, low=None, volume=None, date=None):
         self.stock_name = stock_name
         self.stock_no = stock_no
