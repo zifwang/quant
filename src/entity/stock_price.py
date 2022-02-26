@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from datetime import datetime
 
 """
@@ -64,4 +67,4 @@ class StockPrice:
         @return: stock entity in a readable format string
     """
     def to_string(self) -> str:
-        return '[stock_name:{name}, stock_no:{no}, date:{date}, open:{open}, close:{close}, high:{high}, low:{low}, volume{vol}]'.format(name=self.stock_name, no=self.stock_no, date=self.dateTime, open=self.open_price, close=self.close_price, high=self.high_price, low=self.low_price, vol=self.volume) 
+        return '[stock_name:{name}, stock_no:{no}, date:{date}, open:{open}, close:{close}, high:{high}, low:{low}, volume:{vol}]'.format(name=self.stock_name, no=self.stock_no, date=self.dateTime, open=self.open_price, close=self.close_price, high=self.high_price, low=self.low_price, vol=self.volume) 

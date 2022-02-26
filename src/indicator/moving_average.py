@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from entity.stock_price_holder import StockPriceHolder
 
 class MovingAverage:
@@ -41,8 +44,8 @@ class MovingAverage:
         @return: MovingAverage entity in a readable format string
     """
     def to_string(self):
-        periods = self.period_list[0] + "--" + self.period_list[len(self.period_list)-1]
-        stock_info = self.stock_price_holder.get_stock_name() + "(" + self.stock_price_holder.get_stock_no + ")"
-        ma = self.moving_average_list[0] + self.moving_average_list[1] + self.moving_average_list[2] + "..."
+        periods = str(self.period_list[0]) + "--" + str(self.period_list[len(self.period_list)-1])
+        stock_info = self.stock_price_holder.get_stock_name() + "(" + self.stock_price_holder.get_stock_no() + ")"
+        ma = str(self.moving_average_list[0]) + "," + str(self.moving_average_list[1]) + "," + str(self.moving_average_list[2]) + "..."
 
         return '[stock:{stock_info}, moving_average_type:{ma_type}, period:{periods}, calculated_moving_average:{ma}]'.format(stock_info=stock_info, ma_type=self.ma_type, periods=periods, ma=ma)
