@@ -1,8 +1,6 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-import numpy as np
-import pandas as pd
 
 from indicator.moving_average import MovingAverage
 from common.moving_average_type import EMA
@@ -24,7 +22,7 @@ class ExponentialMovingAverage(MovingAverage):
         self.moving_average_list = self.calculate_moving_average(self.get_stock_price_holder().get_close_list(), window_size)
 
         # set period_list
-        self.period_list = self.calculate_period_list(self.get_stock_price_holder().get_date_list(), window_size)
+        self.period_list = self.calculate_period_list(self.get_stock_price_holder().get_date_list())
         
     """
         getter & setter for the smoothing factor alpha
@@ -39,7 +37,7 @@ class ExponentialMovingAverage(MovingAverage):
         alpha = 2/(1+window_size)
         @param: close_price_list: close price list
         @param: moving average window size
-        @return: sma values
+        @return: ema values
     """
     def calculate_moving_average(self, close_price_list, window_size = int) -> list:
         return self.calculate_moving_average(close_price_list, window_size, 2/(1+window_size))
@@ -48,7 +46,7 @@ class ExponentialMovingAverage(MovingAverage):
         calculate the exponential moving average prices
         @param: close_price_list: close price list
         @param: moving average window size
-        @return: sma values
+        @return: ema values
     """
     def calculate_moving_average(self, close_price_list, window_size = int, alpha = float) -> list:
         assert type(close_price_list) == list, "the input must be in list type"
@@ -70,5 +68,5 @@ class ExponentialMovingAverage(MovingAverage):
         @param: window_size: moving average window size
         @return: modified period_list
     """
-    def calculate_period_list(self, period_list, window_size = int) -> list:
+    def calculate_period_list(self, period_list, window_size = None) -> list:
         return period_list
