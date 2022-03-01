@@ -35,8 +35,8 @@ class CumulativeMovingAverage(MovingAverage):
                 cma = np.sum(close_price_list[0:i+1]) / window_size
                 moving_average_list.append(cma)
             else:
-                # CMAn+1 = CMAn + (Xn+1 - CMAn)/(n+1)
-                cma = (close_price_list[i] + window_size * moving_average_list[pointer])/(window_size+1)
+                # CMAn+1 = CMAn + (Xn+1 - CMAn)/(n+1) -- n is current position
+                cma = (close_price_list[i] + i * moving_average_list[pointer])/(i+1)
                 moving_average_list.append(cma)
                 pointer += 1
         
