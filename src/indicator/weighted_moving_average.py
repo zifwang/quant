@@ -4,19 +4,18 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import numpy as np
 
 from indicator.moving_average import MovingAverage
-from common.moving_average_type import CMA
+from common.moving_average_type import WMA
 from entity.stock_price_holder import StockPriceHolder
 
 """
-    Cumulative Moving Average extends the Moving Average(MovingAverage)
-    CMA is also frequently called a running average or a long running average although the term running average is also used as synonym for a moving average.
-    The data arrives in an orderly data stream and the statistician would like to calculate the average of all data up until the current data point, which in itself moves with time
+    Weighted Moving Average
+    A Weighted Moving Average puts more weight on recent data and less on past data.
 """
-class CumulativeMovingAverage(MovingAverage):
+class WeightedMovingAverage(MovingAverage):
     def __init__(self, stock_price_holder=StockPriceHolder, window_size=int):
-        super().__init__(stock_price_holder, window_size, CMA)
-    
-        # set cma
+        super().__init__(stock_price_holder, window_size, WMA)
+
+        # set wma
         self.moving_average_list = self.calculate_moving_average(self.get_stock_price_holder().get_close_list(), window_size)
 
         # set period_list
@@ -31,20 +30,26 @@ class CumulativeMovingAverage(MovingAverage):
     def calculate_moving_average(self, close_price_list, window_size=int) -> list:
         assert type(close_price_list) == list, "the input must be in list type"
         assert len(close_price_list) > window_size, "list size must be more than window_size"
-
-        pointer = 0
+        
         moving_average_list = []
+        denominator = window_size*(window_size+1)/2
+        pointer = 0
 
+        cum_sum_list = np.cumsum(close_price_list)
         for i in range(window_size-1, len(close_price_list)):
             if i == window_size-1:
-                cma = np.sum(close_price_list[0:i+1]) / window_size
-                moving_average_list.append(cma)
+                k = 1
+                numerator = 0
+                for j in range(0, window_size):
+                    numerator += close_price_list[j] * k
+                    k += 1
+                moving_average_list.append(numerator/denominator)
             else:
-                # CMAn+1 = CMAn + (Xn+1 - CMAn)/(n+1) -- n is current position
-                cma = (close_price_list[i] + i * moving_average_list[pointer])/(i+1)
-                moving_average_list.append(cma)
+                total_m = cum_sum_list[i]-cum_sum_list[pointer]
+                wma = moving_average_list[pointer] + (window_size*close_price_list[i] - total_m)/denominator
+                moving_average_list.append(wma)
                 pointer += 1
-        
+
         return moving_average_list
     
     """
