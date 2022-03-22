@@ -2,6 +2,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import numpy as np
+import pandas as pd
 
 from indicator.moving_average import MovingAverage
 from common.moving_average_type import WMA
@@ -32,25 +33,13 @@ class WeightedMovingAverage(MovingAverage):
         assert len(close_price_list) > window_size, "list size must be more than window_size"
         
         moving_average_list = []
-        denominator = window_size*(window_size+1)/2
-        pointer = 0
 
-        cum_sum_list = np.cumsum(close_price_list)
-        for i in range(window_size-1, len(close_price_list)):
-            if i == window_size-1:
-                k = 1
-                numerator = 0
-                for j in range(0, window_size):
-                    numerator += close_price_list[j] * k
-                    k += 1
-                moving_average_list.append(numerator/denominator)
-            else:
-                total_m = cum_sum_list[i]-cum_sum_list[pointer]
-                wma = moving_average_list[pointer] + (window_size*close_price_list[i] - total_m)/denominator
-                moving_average_list.append(wma)
-                pointer += 1
+        weights = np.arange(1, window_size + 1)
+        df = pd.DataFrame({'val': close_price_list})
+        moving_average_list = df['val'].rolling(window_size).apply(lambda x: np.dot(x, weights) /
+                                       weights.sum()).to_list()
 
-        return moving_average_list
+        return moving_average_list[window_size-1:]
     
     """
         calculate the period list
