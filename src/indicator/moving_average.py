@@ -17,7 +17,8 @@ class MovingAverage:
         @param close_price_list: list
         @param window_size: int
     """
-    def calculate_moving_average(self, close_price_list, window_size = int) -> list:
+    @staticmethod
+    def calculate_moving_average(close_price_list, window_size = int) -> list:
         raise NotImplementedError
         
     """

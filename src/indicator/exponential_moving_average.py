@@ -13,13 +13,12 @@ class ExponentialMovingAverage(MovingAverage):
         # set smoothing factor
         if alpha:
             assert 0 < alpha <= 1.0, "smoothing factor(alpha) is not in the range"
-            assert 0 == alpha, "smoothing factor(alpha) is not in the range"
             self.alpha = self.alpha
         else:
             self.alpha = 2/(1+window_size)  # default alpha
 
         # set ema
-        self.moving_average_list = self.calculate_moving_average(self.get_stock_price_holder().get_close_list(), window_size)
+        self.moving_average_list = self.calculate_moving_average(self.get_stock_price_holder().get_close_list(), window_size, self.alpha)
 
         # set period_list
         self.period_list = self.calculate_period_list(self.get_stock_price_holder().get_date_list())
@@ -33,22 +32,16 @@ class ExponentialMovingAverage(MovingAverage):
         return self.alpha
     
     """
-        calculate the exponential moving average prices with the default smoothing factor(alpha)
-        alpha = 2/(1+window_size)
-        @param: close_price_list: close price list
-        @param: moving average window size
-        @return: ema values
-    """
-    def calculate_moving_average(self, close_price_list, window_size = int) -> list:
-        return self.calculate_moving_average(close_price_list, window_size, 2/(1+window_size))
-
-    """
         calculate the exponential moving average prices
         @param: close_price_list: close price list
         @param: moving average window size
         @return: ema values
     """
-    def calculate_moving_average(self, close_price_list, window_size = int, alpha = float) -> list:
+    @staticmethod
+    def calculate_moving_average(close_price_list, window_size = int, alpha = float) -> list:
+        print(type(alpha))
+        assert type(alpha) == float, "smoothing factor(alpha) must be in float type"
+        assert 0 < alpha <= 1.0, "smoothing factor(alpha) is not in the range"
         assert type(close_price_list) == list, "the input must be in list type"
         assert len(close_price_list) > window_size, "list size must be more than window_size"
         
@@ -57,7 +50,7 @@ class ExponentialMovingAverage(MovingAverage):
 
         for i in range(1, len(close_price_list)):
             # alpha*(closePrice_today - ema_yesterday) + ema_yesterday
-            ema_today = self.alpha * close_price_list[i] + (1 - self.alpha) * moving_average_list[i-1]
+            ema_today = close_price_list[i] * alpha + moving_average_list[i-1] * (1 - alpha) 
             moving_average_list.append(ema_today)
         
         return moving_average_list

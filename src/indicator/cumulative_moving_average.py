@@ -28,7 +28,8 @@ class CumulativeMovingAverage(MovingAverage):
         @param: moving average window size
         @return: cma values
     """
-    def calculate_moving_average(self, close_price_list, window_size=int) -> list:
+    @staticmethod
+    def calculate_moving_average(close_price_list, window_size=int) -> list:
         assert type(close_price_list) == list, "the input must be in list type"
         assert len(close_price_list) > window_size, "list size must be more than window_size"
 
