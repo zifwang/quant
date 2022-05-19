@@ -13,15 +13,6 @@ class MovingAverage:
         self.period_list = []
 
     """
-        calculate_moving_average
-        @param close_price_list: list
-        @param window_size: int
-    """
-    @staticmethod
-    def calculate_moving_average(close_price_list, window_size = int) -> list:
-        raise NotImplementedError
-        
-    """
         Below is getter and setter setcion
     """
     def set_stock_price_holder(self, stock_price_holder = StockPriceHolder) -> None:

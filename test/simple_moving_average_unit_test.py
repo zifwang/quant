@@ -28,12 +28,15 @@ class TestSMA(unittest.TestCase):
         stock_price_holder = file_reader.read_csv_file_to_stock_price_holder(stock_name, stock_no)
 
         sma = SimpleMovingAverage(stock_price_holder, window_size)
+        sma_wait_test = []
+        for num in sma.get_moving_average_list():
+            sma_wait_test.append(float("{:.4f}".format(num)))
         sma_list_right = calculate_sma(stock_price_holder, window_size)
         period_list = stock_price_holder.get_date_list()
         period_list = period_list[window_size-1: ]
 
         self.assertAlmostEqual(sma.get_ma_type(), "Simple Moving Average")
-        self.assertEqual(sma.get_moving_average_list(), sma_list_right)
+        self.assertEqual(sma_wait_test, sma_list_right)
         self.assertEqual(sma.get_period_list(), period_list)
     
     def test_win_size_3(self):
@@ -45,12 +48,15 @@ class TestSMA(unittest.TestCase):
         stock_price_holder = file_reader.read_csv_file_to_stock_price_holder(stock_name, stock_no)
 
         sma = SimpleMovingAverage(stock_price_holder, window_size)
+        sma_wait_test = []
+        for num in sma.get_moving_average_list():
+            sma_wait_test.append(float("{:.4f}".format(num)))
         sma_list_right = calculate_sma(stock_price_holder, window_size)
         period_list = stock_price_holder.get_date_list()
         period_list = period_list[window_size-1: ]
 
         self.assertAlmostEqual(sma.get_ma_type(), "Simple Moving Average")
-        self.assertEqual(sma.get_moving_average_list(), sma_list_right)
+        self.assertEqual(sma_wait_test, sma_list_right)
         self.assertEqual(sma.get_period_list(), period_list)
         
     def test_win_size_6(self):
@@ -62,12 +68,15 @@ class TestSMA(unittest.TestCase):
         stock_price_holder = file_reader.read_csv_file_to_stock_price_holder(stock_name, stock_no)
 
         sma = SimpleMovingAverage(stock_price_holder, window_size)
+        sma_wait_test = []
+        for num in sma.get_moving_average_list():
+            sma_wait_test.append(float("{:.4f}".format(num)))
         sma_list_right = calculate_sma(stock_price_holder, window_size)
         period_list = stock_price_holder.get_date_list()
         period_list = period_list[window_size-1: ]
 
         self.assertAlmostEqual(sma.get_ma_type(), "Simple Moving Average")
-        self.assertEqual(sma.get_moving_average_list(), sma_list_right)
+        self.assertEqual(sma_wait_test, sma_list_right)
         self.assertEqual(sma.get_period_list(), period_list)
     
     def test_win_size_10(self):
@@ -79,12 +88,15 @@ class TestSMA(unittest.TestCase):
         stock_price_holder = file_reader.read_csv_file_to_stock_price_holder(stock_name, stock_no)
 
         sma = SimpleMovingAverage(stock_price_holder, window_size)
+        sma_wait_test = []
+        for num in sma.get_moving_average_list():
+            sma_wait_test.append(float("{:.4f}".format(num)))
         sma_list_right = calculate_sma(stock_price_holder, window_size)
         period_list = stock_price_holder.get_date_list()
         period_list = period_list[window_size-1: ]
 
         self.assertAlmostEqual(sma.get_ma_type(), "Simple Moving Average")
-        self.assertEqual(sma.get_moving_average_list(), sma_list_right)
+        self.assertEqual(sma_wait_test, sma_list_right)
         self.assertEqual(sma.get_period_list(), period_list)
     
     def test_win_size_20(self):
@@ -96,12 +108,15 @@ class TestSMA(unittest.TestCase):
         stock_price_holder = file_reader.read_csv_file_to_stock_price_holder(stock_name, stock_no)
 
         sma = SimpleMovingAverage(stock_price_holder, window_size)
+        sma_wait_test = []
+        for num in sma.get_moving_average_list():
+            sma_wait_test.append(float("{:.4f}".format(num)))
         sma_list_right = calculate_sma(stock_price_holder, window_size)
         period_list = stock_price_holder.get_date_list()
         period_list = period_list[window_size-1: ]
 
         self.assertAlmostEqual(sma.get_ma_type(), "Simple Moving Average")
-        self.assertEqual(sma.get_moving_average_list(), sma_list_right)
+        self.assertEqual(sma_wait_test, sma_list_right)
         self.assertEqual(sma.get_period_list(), period_list)
 
     def test_MSFT_size_20(self):
@@ -113,10 +128,26 @@ class TestSMA(unittest.TestCase):
         stock_price_holder = file_reader.read_csv_file_to_stock_price_holder(stock_name, stock_no)
 
         sma = SimpleMovingAverage(stock_price_holder, window_size)
+        sma_wait_test = []
+        for num in sma.get_moving_average_list():
+            sma_wait_test.append(float("{:.4f}".format(num)))
         sma_list_right = calculate_sma(stock_price_holder, window_size)
         period_list = stock_price_holder.get_date_list()
         period_list = period_list[window_size-1: ]
 
         self.assertAlmostEqual(sma.get_ma_type(), "Simple Moving Average")
-        self.assertEqual(sma.get_moving_average_list(), sma_list_right)
+        self.assertEqual(sma_wait_test, sma_list_right)
         self.assertEqual(sma.get_period_list(), period_list)
+    
+    def test_wsft_win_size_less_than_1_sts_method(self):
+        stock_name = "MicroSoft"
+        stock_no = "MSFT"
+        window_size = -1
+        file_name = "C:/Users/insan/Documents/Project/Python/Project/quant/test/test_data/HistoricalData_MSFT.csv"
+        file_reader = FileReader(file_name)
+        stock_price_holder = file_reader.read_csv_file_to_stock_price_holder(stock_name, stock_no)
+
+        with self.assertRaises(Exception) as context:
+            sma = SimpleMovingAverage.calculate_moving_average(stock_price_holder.get_close_list(), window_size)
+        
+        self.assertAlmostEqual(str(context.exception), "window_size must be more than 1")

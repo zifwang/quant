@@ -31,8 +31,9 @@ class CumulativeMovingAverage(MovingAverage):
     @staticmethod
     def calculate_moving_average(close_price_list, window_size=int) -> list:
         assert type(close_price_list) == list, "the input must be in list type"
+        assert window_size > 1, "window_size must be more than 1"
         assert len(close_price_list) > window_size, "list size must be more than window_size"
-
+        
         pointer = 0
         moving_average_list = []
 

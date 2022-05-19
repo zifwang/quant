@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     This class is used to store historical pricing information
 """
 class StockPriceHolder:
-    def __init__(self, stock_name = str, stock_no=str, open=list, close=list, high=list, low=list, volume=list, date=list):
+    def __init__(self, stock_name=str, stock_no=str, open=list, close=list, high=list, low=list, volume=list, date=list):
         self.stock_name = stock_name
         self.stock_no = stock_no
         self.open_list = open

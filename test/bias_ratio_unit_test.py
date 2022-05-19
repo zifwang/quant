@@ -195,3 +195,29 @@ class TestBR(unittest.TestCase):
         self.assertEqual(br.get_period_list(), period_list)
         self.assertEqual(len(br_test_list), len(period_list))
         self.assertEqual(br_test_list, br_list_right)
+    
+    def test_win_size_more_than_list(self):
+        stock_name = "MicroSoft"
+        stock_no = "MSFT"
+        window_size = 3000
+        file_name = "C:/Users/insan/Documents/Project/Python/Project/quant/test/test_data/HistoricalData_MSFT.csv"
+        file_reader = FileReader(file_name)
+        stock_price_holder = file_reader.read_csv_file_to_stock_price_holder(stock_name, stock_no)
+
+        with self.assertRaises(Exception) as context:
+            br = BiasRatio(stock_price_holder, window_size)
+        
+        self.assertAlmostEqual(str(context.exception), "list size must be more than window_size")
+    
+    def test_wsft_win_size_less_than_0(self):
+        stock_name = "MicroSoft"
+        stock_no = "MSFT"
+        window_size = -1
+        file_name = "C:/Users/insan/Documents/Project/Python/Project/quant/test/test_data/HistoricalData_MSFT.csv"
+        file_reader = FileReader(file_name)
+        stock_price_holder = file_reader.read_csv_file_to_stock_price_holder(stock_name, stock_no)
+
+        with self.assertRaises(Exception) as context:
+            br = BiasRatio(stock_price_holder, window_size)
+        
+        self.assertAlmostEqual(str(context.exception), "window_size must be more than 1")
